@@ -1,0 +1,35 @@
+{
+  "name": "srvd",
+  "version": "0.0.0",
+  "description": "Another Development Server.  Supports Range Requests.  Configure through Environmental Variables.",
+  "main": "srvd.js",
+  "files": [
+    "srvd.js"
+  ],
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanielJDufour/srvd.git"
+  },
+  "keywords": [
+    "async",
+    "byte",
+    "config",
+    "data",
+    "dev",
+    "env",
+    "http",
+    "range",
+    "requests",
+    "server",
+    "static"
+  ],
+  "author": "Daniel J. Dufour",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/DanielJDufour/srvd/issues"
+  },
+  "homepage": "https://github.com/DanielJDufour/srvd#readme"
+}
