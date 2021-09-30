@@ -2,8 +2,10 @@
 > Another Development Server
 
 # features
+- serve directory of static files
 - supports range requests
 - controllable through environmental variables
+- usage in JS and on the command line
 
 # basic usage
 ```bash
