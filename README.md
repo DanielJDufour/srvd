@@ -1,5 +1,9 @@
 # srvd
-Another Development Server.  Supports Range Requests.  Configure through Environmental Variables.
+> Another Development Server
+
+# features
+- supports range requests
+- controllable through environmental variables
 
 # basic usage
 ```bash
