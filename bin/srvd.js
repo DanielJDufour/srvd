@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const http = require("http");
 
 const serveStatic = require("serve-static");
@@ -5,7 +7,7 @@ const finalhandler = require("finalhandler");
 
 const DEFAULT_PORT = 8080;
 
-function serve({ acceptRanges = true, debug = false, root, port } = { acceptRanges: true }) {
+function serve ({ acceptRanges = true, debug = false, root, port } = { acceptRanges: true }) {
   // console.log(arguments);
   if (!root) {
     root = process.cwd();
@@ -27,7 +29,7 @@ function serve({ acceptRanges = true, debug = false, root, port } = { acceptRang
   if (debug) console.log("[srvd] serving on port " + port);
 
   function checkForCloseRequest() {
-    if (["TRUE", "True", "true"].includes(process.env.SRVD_PLZ_CLOSE)) {
+    if (["TRUE","True","true"].includes(process.env.SRVD_PLZ_CLOSE)) {
       server.close();
     } else {
       setTimeout(() => checkForCloseRequest(), 500);
@@ -36,13 +38,13 @@ function serve({ acceptRanges = true, debug = false, root, port } = { acceptRang
   setTimeout(() => checkForCloseRequest(), 500);
 
   return { acceptRanges, debug, server, port, root };
-}
+};
 
 module.exports = { serve };
 
 if (require.main === module) {
   const args = Array.from(process.argv);
-  const str = args.join(" ");
+  const str = args.join(" ");  
 
   serve({
     debug: !!str.match(/-?-debug((=|== )(true|True|TRUE))?/),
