@@ -7,6 +7,7 @@
     "srvd": "bin/main.js"
   },
   "files": [
+    "bin/main.js",
     "srvd.js"
   ],
   "scripts": {
