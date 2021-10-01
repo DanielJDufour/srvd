@@ -4,12 +4,13 @@
   "description": "Another Development Server.  Supports Range Requests.  Configure through Environmental Variables.",
   "main": "srvd.js",
   "bin": {
-    "srvd": "srvd.js"
+    "srvd": "bin/main.js"
   },
   "files": [
     "srvd.js"
   ],
   "scripts": {
+    "build": "npx webpack build --entry=$PWD/srvd.js --mode=production --no-devtool --output-path=bin --target=node",
     "test": "node test.js"
   },
   "repository": {
@@ -34,5 +35,9 @@
   "bugs": {
     "url": "https://github.com/DanielJDufour/srvd/issues"
   },
-  "homepage": "https://github.com/DanielJDufour/srvd#readme"
+  "homepage": "https://github.com/DanielJDufour/srvd#readme",
+  "dependencies": {
+    "finalhandler": "^1.1.2",
+    "serve-static": "^1.14.1"
+  }
 }
