@@ -38,7 +38,12 @@ const obj = srvd.serve({
 
   // root directory to serve files from
   // default is the common working directory
-  root: "/tmp/test"
+  root: "/tmp/test",
+
+  // how long to wait for requests in seconds
+  // before shutting down
+  // defaults to 60 seconds
+  wait: 30
 });
 ```
 serve returns the following object:
