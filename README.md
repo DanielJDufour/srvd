@@ -61,7 +61,7 @@ serve returns the following object:
   debug: true,
 
   // maximum number of requests
-  max: Infinity,
+  max: 100,
 
   // port server is running on 
   port: 3000,
