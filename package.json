@@ -13,7 +13,7 @@
   "scripts": {
     "build": "mkdir -p bin && echo \"#!/usr/bin/env node\n\" > ./bin/srvd.js && cat srvd.js >> ./bin/srvd.js",
     "format": "npx prettier --arrow-parens=avoid --print-width=120 --trailing-comma=none --write srvd.js *.js test/*.js",
-    "test": "node test/test.cb.js && node test/test.env.js && node test/test.wait.js"
+    "test": "node test/test.cb.js && node test/test.max.js && node test/test.env.js && node test/test.wait.js"
   },
   "repository": {
     "type": "git",
