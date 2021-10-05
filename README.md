@@ -32,6 +32,11 @@ const obj = srvd.serve({
   // default is false
   debug: true,
 
+  // optional
+  // maximum number of requests
+  // default is Infinity
+  max: 100,
+
   // port
   // default is 8088
   port: 3000,
@@ -54,6 +59,9 @@ serve returns the following object:
 
   // whether debug logging is on/off
   debug: true,
+
+  // maximum number of requests
+  max: Infinity,
 
   // port server is running on 
   port: 3000,
