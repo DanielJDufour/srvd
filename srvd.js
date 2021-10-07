@@ -74,7 +74,8 @@ function serve(
   checkWaitTimeout = setInterval(checkWait, 500);
   checkForCloseTimeout = setInterval(checkForCloseRequest, 500);
   server.on("close", () => {
-    if (debug) console.log("[srvd] closed serve");
+    if (debug) console.log(`[srvd] served ${count} requests`);
+    if (debug) console.log("[srvd] closed server");
     clearTimeouts();
   });
 
