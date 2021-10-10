@@ -61,6 +61,7 @@ function serve(
   server = http.createServer(function onRequest(req, res) {
     count++;
     last = Date.now();
+    if (debug) console.log(`[srvd] received a "${req.method}" request for "${req.url}"`);
     serve(req, res, finalhandler(req, res));
     if (count >= max) {
       if (debug) console.log("[srvd] reached maximum number of requests " + max);
