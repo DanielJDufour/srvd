@@ -1,6 +1,6 @@
 {
   "name": "srvd",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Another Development Server.  Supports Range Requests.  Configure through Environmental Variables.",
   "main": "srvd.js",
   "bin": {
