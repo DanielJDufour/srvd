@@ -37,6 +37,7 @@ function serve(
 
   let last = Date.now();
   let server;
+  const sockets = [];
 
   let checkWaitTimeout, checkForCloseTimeout;
 
@@ -45,9 +46,20 @@ function serve(
     if (checkForCloseTimeout) clearTimeout(checkForCloseTimeout);
   }
 
+  function destroySockets() {
+    sockets.forEach(socket => {
+      try {
+        socket.destroy();
+      } catch (err) {
+        // pass
+      }
+    });
+  }
+
   function checkWait() {
     if (Date.now() - last > wait_ms) {
       if (debug) console.log(`[srvd] we haven't received a request in ${wait} seconds, so closing the server`);
+      destroySockets();
       server.close();
     }
   }
@@ -69,6 +81,10 @@ function serve(
       if (debug) console.log("[srvd] reached maximum number of requests " + max);
       server.close();
     }
+  });
+
+  server.on("connection", socket => {
+    sockets.push(socket);
   });
 
   server.listen(port);
