@@ -3,17 +3,22 @@
   "version": "0.3.1",
   "description": "Another Development Server.  Supports Range Requests.  Configure through Environmental Variables.",
   "main": "srvd.js",
+  "types": "srvd.d.ts",
   "bin": {
     "srvd": "bin/srvd.js"
   },
   "files": [
     "srvd.js",
-    "bin/srvd.js"
+    "bin/srvd.js",
+    "srvd.d.ts"
   ],
   "scripts": {
     "build": "mkdir -p bin && echo \"#!/usr/bin/env node\n\" > ./bin/srvd.js && cat srvd.js >> ./bin/srvd.js",
-    "format": "npx prettier --arrow-parens=avoid --print-width=120 --trailing-comma=none --write srvd.js *.js test/*.js",
-    "test": "node test/test.cb.js && node test/test.max.js && node test/test.env.js && node test/test.wait.js"
+    "f": "npm run format",
+    "format": "npx prettier --arrow-parens=avoid --print-width=120 --trailing-comma=none --write srvd.js *.js test/*.js test/*.ts",
+    "test": "npm run test:js && npm run test:ts",
+    "test:js": "node test/test.cb.js && node test/test.max.js && node test/test.env.js && node test/test.wait.js",
+    "test:ts": "npx ts-node ./test/test.types.ts"
   },
   "repository": {
     "type": "git",
@@ -39,7 +44,10 @@
   },
   "homepage": "https://github.com/DanielJDufour/srvd#readme",
   "dependencies": {
-    "finalhandler": "^1.1.2",
-    "serve-static": "^1.14.1"
+    "finalhandler": "^1.2.0",
+    "serve-static": "^1.15.0"
+  },
+  "devDependencies": {
+    "flug": "^2.3.1"
   }
 }
