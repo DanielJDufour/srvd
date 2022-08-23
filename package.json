@@ -15,10 +15,10 @@
   "scripts": {
     "build": "mkdir -p bin && echo \"#!/usr/bin/env node\n\" > ./bin/srvd.js && cat srvd.js >> ./bin/srvd.js",
     "f": "npm run format",
-    "format": "npx prettier --arrow-parens=avoid --print-width=120 --trailing-comma=none --write srvd.js *.js test/*.js test/*.ts",
+    "format": "npx prettier --arrow-parens=avoid --print-width=120 --trailing-comma=none --write srvd.js *.js test/*/*.js test/*/*.ts",
     "test": "npm run test:js && npm run test:ts",
-    "test:js": "node test/test.cb.js && node test/test.max.js && node test/test.env.js && node test/test.wait.js",
-    "test:ts": "npx ts-node ./test/test.types.ts"
+    "test:js": "node test/cjs/test.cb.js && node test/cjs/test.max.js && node test/cjs/test.env.js && node test/cjs/test.wait.js",
+    "test:ts": "npx ts-node ./test/ts/test.log.ts && npx ts-node ./test/ts/test.types.ts"
   },
   "repository": {
     "type": "git",

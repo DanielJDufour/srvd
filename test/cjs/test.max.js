@@ -1,6 +1,6 @@
 const http = require("http");
 const test = require("flug");
-const srvd = require("../srvd");
+const srvd = require("../../srvd");
 
 const get = options =>
   new Promise((resolve, reject) => {

@@ -10,27 +10,26 @@ const DEFAULT_PORT = 8080;
 const TRUES = ["TRUE", "True", "true", true];
 
 function serve(
-  { acceptRanges = true, debug = false, max = Infinity, wait = 60, root, port } = {
+  { acceptRanges = true, debug = false, log = console.log, max = Infinity, wait = 60, root, port } = {
     acceptRanges: true,
     max: Infinity,
     wait: 60
   }
 ) {
-  // console.log(arguments);
   if (!root) {
     root = process.cwd();
-    if (debug) console.log(`[srvd] root not set so using current working directory "${root}"`);
+    if (debug) log(`[srvd] root not set so using current working directory "${root}"`);
   }
 
   if (max === undefined || max === null) max = Infinity;
-  if (debug) console.log(`[srvd] serving ${max} requests`);
+  if (debug) log(`[srvd] serving ${max} requests`);
 
   if (!port) port = process.env.SRVD_DEFAULT_PORT ? process.env.SRVD_DEFAULT_PORT : DEFAULT_PORT;
   port = parseInt(port);
 
   if (!wait) wait = 5;
   wait = wait === Infinity ? wait : parseInt(wait);
-  if (debug) console.log(`[srvd] waiting ${wait} seconds for requests`);
+  if (debug) log(`[srvd] waiting ${wait} seconds for requests`);
   const wait_ms = wait * 1000;
 
   const serve = serveStatic(root, { acceptRanges });
@@ -58,7 +57,7 @@ function serve(
 
   function checkWait() {
     if (Date.now() - last > wait_ms) {
-      if (debug) console.log(`[srvd] we haven't received a request in ${wait} seconds, so closing the server`);
+      if (debug) log(`[srvd] we haven't received a request in ${wait} seconds, so closing the server`);
       destroySockets();
       server.close();
     }
@@ -75,10 +74,10 @@ function serve(
   server = http.createServer(function onRequest(req, res) {
     count++;
     last = Date.now();
-    if (debug) console.log(`[srvd] received a "${req.method}" request for "${req.url}"`);
+    if (debug) log(`[srvd] received a "${req.method}" request for "${req.url}"`);
     serve(req, res, finalhandler(req, res));
     if (count >= max) {
-      if (debug) console.log("[srvd] reached maximum number of requests " + max);
+      if (debug) log("[srvd] reached maximum number of requests " + max);
       server.close();
     }
   });
@@ -88,30 +87,38 @@ function serve(
   });
 
   server.listen(port);
-  if (debug) console.log("[srvd] serving on port " + port);
+  if (debug) log("[srvd] serving on port " + port);
 
   checkWaitTimeout = setInterval(checkWait, 500);
   checkForCloseTimeout = setInterval(checkForCloseRequest, 500);
   server.on("close", () => {
-    if (debug) console.log(`[srvd] served ${count} requests`);
-    if (debug) console.log("[srvd] closed server");
+    if (debug) log(`[srvd] served ${count} requests`);
+    if (debug) log("[srvd] closed server");
     clearTimeouts();
   });
 
-  return { acceptRanges, debug, max, server, port, root, wait };
+  return { acceptRanges, debug, log, max, server, port, root, wait };
 }
 
-module.exports = { serve };
+const srvd = { serve };
+
+if (typeof module === "object") {
+  module.exports = srvd;
+  module.exports.default = srvd;
+}
 
 if (require.main === module) {
   const args = Array.from(process.argv);
   const str = args.join(" ");
+
+  let wait = Array.prototype.slice.call(str.match(/-?-wait(?:=|== )(inf(inity)?|\d+)/i) || [], 1)[0];
+  if (wait.startsWith("inf")) wait = Infinity;
 
   serve({
     debug: !!str.match(/-?-debug((=|== )(true|True|TRUE))?/),
     max: Array.prototype.slice.call(str.match(/-?-max(?:=|== )(\d+)/) || [], 1)[0],
     port: Array.prototype.slice.call(str.match(/-?-port(?:=|== )(\d+)/) || [], 1)[0],
     root: Array.prototype.slice.call(str.match(/-?-root(?:=|== )([^ ]+)/) || [], 1)[0],
-    wait: Array.prototype.slice.call(str.match(/-?-wait(?:=|== )(\d+)/) || [], 1)[0]
+    wait
   });
 }

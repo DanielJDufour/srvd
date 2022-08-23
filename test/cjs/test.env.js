@@ -1,5 +1,5 @@
 const test = require("flug");
-const srvd = require("../srvd");
+const srvd = require("../../srvd");
 
 test("shutting down via env", ({ eq }) => {
   srvd.serve();

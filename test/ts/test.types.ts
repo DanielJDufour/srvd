@@ -1,5 +1,5 @@
 import test from "flug";
-import { serve } from "../srvd";
+import { serve } from "../../srvd";
 
 declare var process: any;
 
