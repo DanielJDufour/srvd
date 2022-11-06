@@ -112,7 +112,7 @@ if (require.main === module) {
   const str = args.join(" ");
 
   let wait = Array.prototype.slice.call(str.match(/-?-wait(?:=|== )(inf(inity)?|\d+)/i) || [], 1)[0];
-  if (wait.startsWith("inf")) wait = Infinity;
+  if (wait?.startsWith("inf")) wait = Infinity;
 
   serve({
     debug: !!str.match(/-?-debug((=|== )(true|True|TRUE))?/),
