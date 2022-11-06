@@ -5,7 +5,7 @@ declare const process: any;
 
 test("logging", ({ eq }) => {
   const logs: string[] = [];
-  const log = (...args) => logs.push(args.toString());
+  const log = (...args: any) => logs.push(args.toString());
   const wait = Infinity;
   serve({
     debug: true,
