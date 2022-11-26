@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-const http = require("http");
+const fs = require("node:fs");
+const http = require("node:http");
+const path = require("node:path");
 
 const serveStatic = require("serve-static");
 const finalhandler = require("finalhandler");
@@ -32,7 +34,7 @@ function serve(
   if (debug) log(`[srvd] waiting ${wait} seconds for requests`);
   const wait_ms = wait * 1000;
 
-  const serve = serveStatic(root, { acceptRanges });
+  const _serve = serveStatic(root, { acceptRanges });
 
   let last = Date.now();
   let server;
@@ -75,7 +77,14 @@ function serve(
     count++;
     last = Date.now();
     if (debug) log(`[srvd] received a "${req.method}" request for "${req.url}"`);
-    serve(req, res, finalhandler(req, res));
+
+    let filepath = path.join(root, req.url);
+    if (!fs.existsSync(filepath) && fs.existsSync(filepath + ".html")) {
+      if (debug) console.log(`[srvd] inferred ${req.url}.html`);
+      req.url += ".html";
+    }
+
+    _serve(req, res, finalhandler(req, res));
     if (count >= max) {
       if (debug) log("[srvd] reached maximum number of requests " + max);
       server.close();
@@ -88,6 +97,7 @@ function serve(
 
   server.listen(port);
   if (debug) log("[srvd] serving on port " + port);
+  if (debug) log("[srvd] visit at http://localhost:" + port);
 
   checkWaitTimeout = setInterval(checkWait, 500);
   checkForCloseTimeout = setInterval(checkForCloseRequest, 500);
@@ -112,7 +122,7 @@ if (require.main === module) {
   const str = args.join(" ");
 
   let wait = Array.prototype.slice.call(str.match(/-?-wait(?:=|== )(inf(inity)?|\d+)/i) || [], 1)[0];
-  if (wait?.startsWith("inf")) wait = Infinity;
+  if (wait?.toLowerCase().startsWith("inf")) wait = Infinity;
 
   serve({
     debug: !!str.match(/-?-debug((=|== )(true|True|TRUE))?/),
