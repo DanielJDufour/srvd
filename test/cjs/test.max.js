@@ -1,17 +1,6 @@
-const http = require("http");
 const test = require("flug");
+const utils = require("./utils.js");
 const srvd = require("../../srvd");
-
-const get = options =>
-  new Promise((resolve, reject) => {
-    let data = "";
-    const req = http.request(options, res => {
-      res.on("data", chunk => (data += chunk));
-      res.on("end", () => resolve(data));
-    });
-    req.on("error", reject);
-    req.end();
-  });
 
 test("max requests", async ({ eq }) => {
   const max_requests = 5;
@@ -23,7 +12,7 @@ test("max requests", async ({ eq }) => {
   });
 
   for (let i = 0; i < max_requests; i++) {
-    const data = await get({
+    const data = await utils.get({
       hostname: "localhost",
       port,
       path: "/package.json",
@@ -36,7 +25,7 @@ test("max requests", async ({ eq }) => {
   for (let i = 0; i < max_requests; i++) {
     let message;
     try {
-      await get({
+      await utils.get({
         hostname: "localhost",
         port,
         path: "/package.json",
