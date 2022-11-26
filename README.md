@@ -33,6 +33,12 @@ const obj = srvd.serve({
   debug: true,
 
   // optional
+  // default is true
+  // if path is invalid, automatically try
+  // adding ".html" to the end
+  infer: true,
+
+  // optional
   // maximum number of requests
   // default is Infinity
   max: 100,
@@ -59,6 +65,9 @@ serve returns the following object:
 
   // whether debug logging is on/off
   debug: true,
+
+  // whether html inference is enabled
+  infer: true,
 
   // maximum number of requests
   max: 100,

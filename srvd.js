@@ -10,8 +10,9 @@ const DEFAULT_PORT = 8080;
 const TRUES = ["TRUE", "True", "true", true];
 
 function serve(
-  { acceptRanges = true, debug = false, log = console.log, max = Infinity, wait = 60, root, port } = {
+  { acceptRanges = true, debug = false, infer = true, log = console.log, max = Infinity, wait = 60, root, port } = {
     acceptRanges: true,
+    infer: true,
     max: Infinity,
     wait: 60
   }
@@ -77,7 +78,7 @@ function serve(
     if (debug) log(`[srvd] received a "${req.method}" request for "${req.url}"`);
 
     let filepath = path.join(root, req.url);
-    if (!fs.existsSync(filepath) && fs.existsSync(filepath + ".html")) {
+    if (infer && !fs.existsSync(filepath) && fs.existsSync(filepath + ".html")) {
       if (debug) console.log(`[srvd] inferred ${req.url}.html`);
       req.url += ".html";
     }
@@ -105,7 +106,7 @@ function serve(
     clearTimeouts();
   });
 
-  return { acceptRanges, debug, log, max, server, port, root, wait };
+  return { acceptRanges, debug, infer, log, max, server, port, root, wait };
 }
 
 const srvd = { serve };
@@ -124,6 +125,7 @@ if (require.main === module) {
 
   serve({
     debug: !!str.match(/-?-debug((=|== )(true|True|TRUE))?/),
+    infer: !!str.match(/-?-infer((=|== )(true|True|TRUE))?/),
     max: Array.prototype.slice.call(str.match(/-?-max(?:=|== )(\d+)/) || [], 1)[0],
     port: Array.prototype.slice.call(str.match(/-?-port(?:=|== )(\d+)/) || [], 1)[0],
     root: Array.prototype.slice.call(str.match(/-?-root(?:=|== )([^ ]+)/) || [], 1)[0],
